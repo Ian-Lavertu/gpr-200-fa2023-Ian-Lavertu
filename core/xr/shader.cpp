@@ -39,10 +39,10 @@ namespace xr {
 		unsigned int fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
 		unsigned int shaderProgram = glCreateProgram();
-		//Attach each stage
+		
 		glAttachShader(shaderProgram, vertexShader);
 		glAttachShader(shaderProgram, fragmentShader);
-		//Link all the stages together
+		
 		glLinkProgram(shaderProgram);
 		int success;
 		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -51,7 +51,7 @@ namespace xr {
 			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 			printf("Failed to link shader program: %s", infoLog);
 		}
-		//The linked program now contains our compiled code, so we can delete these intermediate objects
+		
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 		return shaderProgram;
@@ -68,7 +68,7 @@ namespace xr {
 		glUseProgram(id);
 	}
 
-	// CREATED FUNCTION IN HOPES TO GET RID OF C2065 ERROR
+	
 	unsigned int ShaderLibrary::getID() {
 		return id;
 	}

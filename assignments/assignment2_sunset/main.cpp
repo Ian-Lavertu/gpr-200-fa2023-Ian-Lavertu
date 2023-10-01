@@ -55,7 +55,7 @@ int main() {
 		return 1;
 	}
 
-	//Initialize ImGUI
+	//Initialization of ImGUI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
