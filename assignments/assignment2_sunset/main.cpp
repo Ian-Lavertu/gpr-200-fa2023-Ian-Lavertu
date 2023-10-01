@@ -61,29 +61,29 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
 
-	shaderLib::ShaderLibrary shader("assets/vertexShader.vert", "assets/fragmentShader.frag");
+	xr::ShaderLibrary shader("assets/vertexShader.vert", "assets/fragmentShader.frag");
 	shader.use();
 
 	unsigned int vao = createVAO(vertices, 4, indices, 6);
 	glBindVertexArray(vao);
 
-	float sunSpeed = 0.5;
-	float sunRadius = 0.15;
-	float glowRadius = 0.5;
-	float topDayLight[3] = { 0.8, 0.4, 0.3 };
-	float bottomDayLight[3] = { 0.5, 0.52, 0.9 };
+	float moonSpeed = 0.25;
+	float moonRadius = 0.45;
+	float glowRadius = 0.7;
+	float topDayLight[3] = { 0.3, 0.1, 1.0 };
+	float bottomDayLight[3] = { 0.0, 0.0, 0.0 };
 	float topNightLight[3] = { 0.7, 0.3, 0.03 };
-	float bottomNightLight[3] = { 0.3, 0.15, 0.7 };
-	float sunColor[3] = { 0.95, 0.95, 0.725 };
-	float hillColor[3] = { 0.45, 0.56, 0.35 };
+	float bottomNightLight[3] = { 0.4, 0.0, 0.6 };
+	float moonColor[3] = { 1.0, 1.0, 1.0 };
+	float hillColor[3] = { 0.1, 0.2, 0.2 };
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		shader.setFloat("iSunSpeed", sunSpeed);
-		shader.setFloat("iSunRadius", sunRadius);
+		shader.setFloat("iSunSpeed", moonSpeed);
+		shader.setFloat("iSunRadius", moonRadius);
 		shader.setFloat("iGlowRadius", glowRadius);
 		shader.setFloat("iTime", glfwGetTime());
 		shader.setVec2("iResolution", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -91,7 +91,7 @@ int main() {
 		shader.setVec3("iBottomDayLightCycle", bottomDayLight[0], bottomDayLight[1], bottomDayLight[2]);
 		shader.setVec3("iTopNightLightCycle", topNightLight[0], topNightLight[1], topNightLight[2]);
 		shader.setVec3("iBottomNightLightCycle", bottomNightLight[0], bottomNightLight[1], bottomNightLight[2]);
-		shader.setVec3("iSunColor", sunColor[0], sunColor[1], sunColor[2]);
+		shader.setVec3("iSunColor", moonColor[0], moonColor[1], moonColor[2]);
 		shader.setVec3("iHillColor", hillColor[0], hillColor[1], hillColor[2]);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
@@ -104,14 +104,14 @@ int main() {
 
 			ImGui::Begin("Settings");
 			ImGui::Checkbox("Show Demo Window", &showImGUIDemoWindow);
-			ImGui::SliderFloat("Sun Speed", &sunSpeed, 0.0f, 2.0f);
-			ImGui::SliderFloat("Sun Radius", &sunRadius, 0.0f, 2.0f);
+			ImGui::SliderFloat("Sun Speed", &moonSpeed, 0.0f, 2.0f);
+			ImGui::SliderFloat("Sun Radius", &moonRadius, 0.0f, 2.0f);
 			ImGui::SliderFloat("Glow Radius", &glowRadius, 0.0f, 2.0f);
 			ImGui::ColorEdit3("Top Sky Daylight Gradient", topDayLight);
 			ImGui::ColorEdit3("Bottom Sky Daylight Gradient", bottomDayLight);
 			ImGui::ColorEdit3("Top Sky Night Gradient", topNightLight);
 			ImGui::ColorEdit3("Bottom Night Gradient", bottomNightLight);
-			ImGui::ColorEdit3("Sun Color", sunColor);
+			ImGui::ColorEdit3("Sun Color", moonColor);
 			ImGui::ColorEdit3("Hill Color", hillColor);
 
 			ImGui::End();
