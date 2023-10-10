@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <fstream>
+#include "C:\Users\ian.lavertu\Desktop\Modern Graphics\gpr-200-fa2023-Ian-Lavertu\core\ew\ewMath\mat4.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ namespace xr {
 		void setVec2(const string& name, float x, float y);
 		void setVec3(const string& name, float x, float y, float z);
 		void setVec4(const string& name, float x, float y, float z, float w);
+		void setMat4(const string& name, const ew::Mat4& v) const;
 		unsigned int getID();
 	private:
 		unsigned int id; //OpenGL program handle
