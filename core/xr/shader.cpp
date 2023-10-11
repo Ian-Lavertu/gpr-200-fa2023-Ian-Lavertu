@@ -1,6 +1,6 @@
 #include "shader.h"
 #include <iostream>
-#include <C:\Users\ian.lavertu\Desktop\Modern Graphics\gpr-200-fa2023-Ian-Lavertu\core\ew\external\glad.h>
+#include "../ew/external/glad.h"
 
 using namespace std;
 

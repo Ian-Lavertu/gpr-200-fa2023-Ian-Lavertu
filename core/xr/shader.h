@@ -2,7 +2,8 @@
 
 #include <sstream>
 #include <fstream>
-#include "C:\Users\ian.lavertu\Desktop\Modern Graphics\gpr-200-fa2023-Ian-Lavertu\core\ew\ewMath\mat4.h"
+#include "../ew/ewMath/mat4.h"
+#include "../ew/ewMath/vec3.h"
 
 using namespace std;
 
