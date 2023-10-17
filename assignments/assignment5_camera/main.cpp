@@ -5,6 +5,8 @@
 #include <ew/ewMath/ewMath.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
+#include <xr/camera.h>
+
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
@@ -58,7 +60,8 @@ int main() {
 
 	//Cube mesh
 	ew::Mesh cubeMesh(ew::createCube(0.5f));
-
+	
+	xr::Camera camera;
 	camera.position = ew::Vec3(0.0, 0.0, 5.0);
 	camera.target = ew::Vec3(0.0, 0.0, 0.0);
 	camera.fov = 62;

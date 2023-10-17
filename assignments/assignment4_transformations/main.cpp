@@ -4,6 +4,7 @@
 #include <ew/external/glad.h>
 #include <ew/ewMath/ewMath.h>
 #include <xr/shader.h>
+#include <xr/transformations.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>

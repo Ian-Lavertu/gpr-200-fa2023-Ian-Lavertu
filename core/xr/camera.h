@@ -14,14 +14,14 @@ namespace xr {
 		bool orthographic;
 		float orthoSize;
 		ew::Mat4 ViewMatrix() { // World->View
-			return LookAt(position, target, ew::Vec3(0, 1, 0));
+			return transformationLib::LookAt(position, target, ew::Vec3(0, 1, 0));
 		}
 		ew::Mat4 ProjectionMatrix() { // View->Clip
 			if (orthographic) { // orthographic
-				return Orthographic(orthoSize, aspectRatio, nearPlane, farPlane);
+				return transformationLib::Orthographic(orthoSize, aspectRatio, nearPlane, farPlane);
 			}
 			else { // Perspective
-				return Perspective(ew::Radians(fov), aspectRatio, nearPlane, farPlane);
+				return transformationLib::Perspective(ew::Radians(fov), aspectRatio, nearPlane, farPlane);
 			}
 		}
 	};
