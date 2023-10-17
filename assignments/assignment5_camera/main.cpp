@@ -55,9 +55,18 @@ int main() {
 	glEnable(GL_DEPTH_TEST);
 
 	ew::Shader shader("assets/vertexShader.vert", "assets/fragmentShader.frag");
-	
+
 	//Cube mesh
 	ew::Mesh cubeMesh(ew::createCube(0.5f));
+
+	camera.position = ew::Vec3(0.0, 0.0, 5.0);
+	camera.target = ew::Vec3(0.0, 0.0, 0.0);
+	camera.fov = 62;
+	camera.aspectRatio = static_cast<float>(SCREEN_WIDTH) / static_cast<float>(SCREEN_HEIGHT);
+	camera.orthoSize = 6;
+	camera.nearPlane = 0.1f;
+	camera.farPlane = 100.0f;
+
 
 	//Cube positions
 	for (size_t i = 0; i < NUM_CUBES; i++)
@@ -83,6 +92,9 @@ int main() {
 			cubeMesh.draw();
 		}
 
+		shader.setMat4("_View", camera.ViewMatrix());
+		shader.setMat4("_Clip", camera.ProjectionMatrix());
+
 		//Render UI
 		{
 			ImGui_ImplGlfw_NewFrame();
@@ -102,6 +114,18 @@ int main() {
 				ImGui::PopID();
 			}
 			ImGui::Text("Camera");
+			ImGui::DragFloat3("Position", &camera.position.x, 0.05f);
+			ImGui::DragFloat3("Target", &camera.target.x, 0.05f);
+			ImGui::Checkbox("Orthographic", &camera.orthographic);
+			if (camera.orthographic) {
+				ImGui::SliderFloat("Ortho Height", &camera.orthoSize, 0, 100);
+			}
+			else if (!camera.orthographic) {
+				ImGui::DragFloat("FOV", &camera.fov, 0.05f);
+			}
+			ImGui::DragFloat("Near Plane", &camera.nearPlane, 0.1f);
+			ImGui::DragFloat("Far Plane", &camera.farPlane, 0.1);
+
 			ImGui::End();
 			
 			ImGui::Render();
