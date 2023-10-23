@@ -25,4 +25,12 @@ namespace xr {
 			}
 		}
 	};
+
+	struct CameraControls {
+		double prevMouseX, prevMouseY;
+		float yaw = 0, pitch = 0;
+		float mouseSensitivity = 0.1f;
+		bool firstMouse;
+		float moveSpeed = 5.0f;
+	};
 }
