@@ -15,6 +15,8 @@
 #include <ew/camera.h>
 #include <ew/cameraController.h>
 
+#include "xr/procGen.h"
+
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
 
@@ -24,7 +26,7 @@ int SCREEN_HEIGHT = 720;
 float prevTime;
 
 struct AppSettings {
-	const char* shadingModeNames[6] = { "Solid Color","Normals","UVs","Texture","Lit","Texture Lit"};
+	const char* shadingModeNames[6] = { "Solid Color","Normals","UVs","Texture","Lit","Texture Lit" };
 	int shadingModeIndex;
 
 	ew::Vec3 bgColor = ew::Vec3(0.1f);
@@ -76,16 +78,29 @@ int main() {
 	glPolygonMode(GL_FRONT_AND_BACK, appSettings.wireframe ? GL_LINE : GL_FILL);
 
 	ew::Shader shader("assets/vertexShader.vert", "assets/fragmentShader.frag");
-	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg",GL_REPEAT,GL_LINEAR);
+	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg", GL_REPEAT, GL_LINEAR);
 
 	//Create cube
 	ew::MeshData cubeMeshData = ew::createCube(0.5f);
 	ew::Mesh cubeMesh(cubeMeshData);
 
-	//Initialize transforms
-	ew::Transform cubeTransform;
+	ew::MeshData sphereMeshData = xr::createSphere(0.5f, 64);
+	ew::Mesh sphereMesh(sphereMeshData);
 
-	resetCamera(camera,cameraController);
+	ew::MeshData planeMeshData = xr::createPlane(1.0f, 5);
+	ew::Mesh planeMesh(planeMeshData);
+
+	ew::MeshData cylinderMeshData = xr::createCylinder(2.0f, 1.0f, 8);
+	ew::Mesh cylinderMesh(cylinderMeshData);
+
+	//Initialize transforms
+	ew::Transform cubeTransform, planeTransform, sphereTransform, cylinderTransform;
+
+	planeTransform.position = ew::Vec3(2.0f, 0.0f, 0.0f);
+	sphereTransform.position = ew::Vec3(5.0f, 0.0f, 0.0f);
+	cylinderTransform.position = ew::Vec3(-3.0f, 0.0f, 0.0f);
+
+	resetCamera(camera, cameraController);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -98,12 +113,11 @@ int main() {
 		cameraController.Move(window, &camera, deltaTime);
 
 		//Render
-		glClearColor(appSettings.bgColor.x, appSettings.bgColor.y, appSettings.bgColor.z,1.0f);
+		glClearColor(appSettings.bgColor.x, appSettings.bgColor.y, appSettings.bgColor.z, 1.0f);
 
 		//Clear both color buffer AND depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		
 
 		shader.use();
 		glBindTexture(GL_TEXTURE_2D, brickTexture);
@@ -120,6 +134,15 @@ int main() {
 		//Draw cube
 		shader.setMat4("_Model", cubeTransform.getModelMatrix());
 		cubeMesh.draw((ew::DrawMode)appSettings.drawAsPoints);
+
+		shader.setMat4("_Model", planeTransform.getModelMatrix());
+		planeMesh.draw((ew::DrawMode)appSettings.drawAsPoints);
+
+		shader.setMat4("_Model", sphereTransform.getModelMatrix());
+		sphereMesh.draw((ew::DrawMode)appSettings.drawAsPoints);
+
+		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
+		cylinderMesh.draw((ew::DrawMode)appSettings.drawAsPoints);
 
 		//Render UI
 		{
@@ -164,7 +187,7 @@ int main() {
 					glDisable(GL_CULL_FACE);
 			}
 			ImGui::End();
-			
+
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
@@ -195,5 +218,3 @@ void resetCamera(ew::Camera& camera, ew::CameraController& cameraController) {
 	cameraController.yaw = 0.0f;
 	cameraController.pitch = 0.0f;
 }
-
-
