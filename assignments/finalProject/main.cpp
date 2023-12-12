@@ -67,6 +67,16 @@ unsigned int FirstUnusedParticle()
 	return 0;
 }
 
+void RespawnParticle(Particle& particle, ew::Vec2 offset)
+{
+	float random = ((rand() % 100) - 50) / 10.0f;
+	float rColor = 0.5f + ((rand() % 100) / 100.0f);
+	particle.Position = random + offset;
+	particle.Color = ew::Vec4(rColor, rColor, rColor, 1.0f);
+	particle.Life = 1.0f;
+	particle.Velocity *= 0.1f;
+}
+
 /*******************************************************************/
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
@@ -148,22 +158,22 @@ int main() {
 		particles.push_back(Particle());
 	}
 
-	unsigned int nrNewParticles;
+	unsigned int nrNewParticles = 2;
 	// add the new particles
 	for (int i = 0; i < nrNewParticles; i++)
 	{
 		int unusedParticle = FirstUnusedParticle();
-		RespawnParticle(particles[unusedParticle], object, offset);
+		RespawnParticle(particles[unusedParticle], ew::Vec2(1.0, 1.0));
 	}
 	// update all the particles now that they are declared
 	for (int i = 0; i < nrParticles; i++)
 	{
 		Particle& p = particles[i];
-		p.Life -= dt;
+		p.Life -= 1;
 		if (p.Life > 0.0f)
 		{
-			p.Position -= p.Velocity * dt;
-			p.Color.a -= dt * 2.5f;
+			p.Position -= p.Velocity * 1;
+			p.Color -= 1 * 2.5f;
 		}
 	}
 
