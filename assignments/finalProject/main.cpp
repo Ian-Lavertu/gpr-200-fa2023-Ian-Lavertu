@@ -27,7 +27,7 @@ struct Material {
 } material;
 
 /*******************************************************************/
-
+// Struct to ideally house all needed info for a particle - Thomas
 struct Particle
 {
 	ew::Vec2 Position, Velocity;
@@ -42,6 +42,7 @@ unsigned int nrParticles = 500;
 std::vector<Particle> particles;
 
 unsigned int lastUsedParticle = 0;
+// Should hopefully go through the particle vector and find the first unused particle - Thomas
 unsigned int FirstUnusedParticle()
 {
 
@@ -66,7 +67,7 @@ unsigned int FirstUnusedParticle()
 	lastUsedParticle = 0;
 	return 0;
 }
-
+// Should Take the particle that is unused and respawn it based on the offset value - Thomas
 void RespawnParticle(Particle& particle, ew::Vec2 offset)
 {
 	float random = ((rand() % 100) - 50) / 10.0f;
@@ -152,20 +153,20 @@ int main() {
 
 	/*******************************************************************/
 
-	// initialize the vector of particles
+	// initialize the vector of particles - Thomas
 	for (int i = 0; i < nrParticles; i++)
 	{
 		particles.push_back(Particle());
 	}
 
 	unsigned int nrNewParticles = 2;
-	// add the new particles
+	// add the new particles - Thomas
 	for (int i = 0; i < nrNewParticles; i++)
 	{
 		int unusedParticle = FirstUnusedParticle();
 		RespawnParticle(particles[unusedParticle], ew::Vec2(1.0, 1.0));
 	}
-	// update all the particles now that they are declared
+	// update all the particles now that they are declared - Thomas
 	for (int i = 0; i < nrParticles; i++)
 	{
 		Particle& p = particles[i];
