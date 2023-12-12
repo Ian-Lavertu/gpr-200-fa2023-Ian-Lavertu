@@ -26,6 +26,49 @@ struct Material {
 	ew::Vec3 lightColor = ew::Vec3(1.0f, 1.0f, 1.0f);
 } material;
 
+/*******************************************************************/
+
+struct Particle
+{
+	ew::Vec2 Position, Velocity;
+	ew::Vec4 Color;
+	float Life; 
+
+	Particle()
+		: Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f) {}
+};
+
+unsigned int nrParticles = 500;
+std::vector<Particle> particles;
+
+unsigned int lastUsedParticle = 0;
+unsigned int FirstUnusedParticle()
+{
+
+	for (int i = lastUsedParticle; i < nrParticles; i++)
+	{
+		if (particles[i].Life <= 0.0f)
+		{
+			lastUsedParticle = i;
+			return i;
+		}
+	}
+
+	for (int i = 0; i < lastUsedParticle; i++)
+	{
+		if (particles[i].Life <= 0.0f)
+		{
+			lastUsedParticle = i;
+			return i; 
+		}
+	}
+
+	lastUsedParticle = 0;
+	return 0;
+}
+
+/*******************************************************************/
+
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
 
@@ -96,6 +139,36 @@ int main() {
 	Light lights[MAX_LIGHTS];
 	ew::Transform lightTransform[MAX_LIGHTS];
 	ew::Mesh shapeLightMesh = ew::Mesh(ew::createSphere(0.5f, 16));
+
+	/*******************************************************************/
+
+	// initialize the vector of particles
+	for (int i = 0; i < nrParticles; i++)
+	{
+		particles.push_back(Particle());
+	}
+
+	unsigned int nrNewParticles;
+	// add the new particles
+	for (int i = 0; i < nrNewParticles; i++)
+	{
+		int unusedParticle = FirstUnusedParticle();
+		RespawnParticle(particles[unusedParticle], object, offset);
+	}
+	// update all the particles now that they are declared
+	for (int i = 0; i < nrParticles; i++)
+	{
+		Particle& p = particles[i];
+		p.Life -= dt;
+		if (p.Life > 0.0f)
+		{
+			p.Position -= p.Velocity * dt;
+			p.Color.a -= dt * 2.5f;
+		}
+	}
+
+
+	/*******************************************************************/
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();

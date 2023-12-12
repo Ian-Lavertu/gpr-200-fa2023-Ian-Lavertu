@@ -1,5 +1,4 @@
 #version 450
-#version 450
 #define MAX_LIGHTS 4
 
 out vec4 FragColor;
